@@ -5,11 +5,11 @@ import { updateProfile } from '../features/authSlice'; // your thunk
 import axiosInstance from '../utils/axios';
 
 function ProfilePage() {
-  const { authUser } = useSelector((state) => state.auth);
+  const { authUser ,isUpdating} = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
+  // const [isUpdating, setIsUpdating] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null); // new state for file
 
@@ -17,20 +17,25 @@ function ProfilePage() {
     name: '', email: '', phone: '', address: '', about: '', bio: '', gender: ''
   });
 
-  useEffect(() => {
-    if (authUser) {
-      setFormData({
-        name: authUser.name || '',
-        email: authUser.email || '',
-        phone: authUser.phone || '',
-        address: authUser.address || '',
-        about: authUser.about || '',
-        bio: authUser.bio || '',
-        gender: authUser.gender || ''
-      });
-      setImagePreview(authUser.profilePic || `https://api.dicebear.com/7.x/avataaars/svg?seed=${authUser._id}`);
-    }
-  }, [authUser]);
+useEffect(() => {
+  if (authUser) {
+    setFormData({
+      name: authUser.name || '',
+      email: authUser.email || '',
+      phone: authUser.phone || '',
+      address: authUser.address || '',
+      about: authUser.about || '',
+      bio: authUser.bio || '',
+      gender: authUser.gender || ''
+    });
+
+    // Fix preview: use authUser.ProfileImg if exists, else fallback avatar
+    setImagePreview(
+      authUser.ProfileImg || 
+      `https://api.dicebear.com/7.x/avataaars/svg?seed=${authUser._id}`
+    );
+  }
+}, [authUser]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -81,7 +86,7 @@ function ProfilePage() {
 
 const handleSave = async () => {
   if (!formData.name.trim()) return toast.warn("Name is required");
-  setIsUpdating(true);
+  // setIsUpdating(true);
 
   try {
     const payload = new FormData();
@@ -94,7 +99,7 @@ const handleSave = async () => {
     // Debug: check FormData
     // for (let pair of payload.entries()) console.log(pair[0], pair[1]);
 
-    // Dispatch Redux thunk    
+    // Dispatch Redux thunk
     const response = await dispatch(updateProfile(payload)).unwrap();
 
     console.log("Backend response:", response);
@@ -105,7 +110,7 @@ const handleSave = async () => {
     console.error(err);
     toast.error(err?.message || "Failed to update profile");
   } finally {
-    setIsUpdating(false);
+    // setIsUpdating(false);
   }
 };
   const handleDiscard = () => {
@@ -120,7 +125,7 @@ const handleSave = async () => {
       bio: authUser.bio || '',
       gender: authUser.gender || ''
     });
-    setImagePreview(authUser.profilePic || `https://api.dicebear.com/7.x/avataaars/svg?seed=${authUser._id}`);
+    setImagePreview(authUser.ProfileImg || `https://api.dicebear.com/7.x/avataaars/svg?seed=${authUser._id}`);
   };
 
   if (!authUser) {
@@ -130,7 +135,7 @@ const handleSave = async () => {
       </div>
     );
   }
-
+// console.log(authUser)
   return (
     <div className='w-full min-h-screen font-Poppins bg-transparent'>
       {/* Container: Stacked on mobile, row on MD+ */}
@@ -139,7 +144,7 @@ const handleSave = async () => {
         <aside className='w-full md:w-80 p-6 md:p-8 flex flex-col items-center md:items-start border-b md:border-b-0 md:border-r border-black/5'>
           <div className='relative group mb-6'>
             <div className='w-32 h-32 md:w-44 md:h-44 rounded-3xl overflow-hidden shadow-sm ring-4 ring-black/5'>
-              <img src={imagePreview} alt='Profile' className='w-full h-full object-cover' />
+              <img src={ imagePreview||authUser.ProfileImg || `https://api.dicebear.com/7.x/avataaars/svg?seed=${authUser._id}`} alt='Profile' className='w-full h-full object-cover' />
             </div>
             {isEditing && (
               <label className="absolute inset-0 bg-black/60 rounded-3xl flex flex-col items-center justify-center cursor-pointer text-white text-xs opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -219,6 +224,7 @@ const handleSave = async () => {
                   </>
                 ) : (
                   <button 
+                  disabled={isUpdating}
                     onClick={() => setIsEditing(true)} 
                     className='w-full sm:w-auto px-10 py-3 rounded-xl bg-slate-900 text-white hover:bg-black transition-all font-semibold text-sm shadow-lg shadow-slate-200/50'
                   >

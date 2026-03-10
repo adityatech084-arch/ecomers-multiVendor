@@ -326,41 +326,60 @@ export const getVendorDetails = async (req, res) => {
   }
 };
 
+
 export const updateProfile = async (req, res) => {
   try {
-    console.log("REQ.BODY:", req.body); // should show all text fields
-    console.log("REQ.FILE:", req.file); // should show file info if uploaded
-
-    if (!req.body) {
-      return res.status(400).json({ success: false, message: "No data received" });
-    }
-
-    const { name, email, phone, address, about, bio, gender } = req.body;
+    console.log("User ID:", req.user?._id);
+    console.log("Request body:", req.body);
+    console.log("Request files:", req.files); // <--- express-fileupload puts files here
+    console.log("=== Update Profile Request ===");
 
     const user = await User.findById(req.user._id);
-    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+    if (!user) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "User not found" 
+      });
+    }
 
-    // Update fields
-    user.name = name;
-    user.email = email;
-    user.phone = phone;
-    user.address = address;
-    user.about = about;
-    user.bio = bio;
-    user.gender = gender;
+    // Handle text fields
+    const allowedFields = ['name', 'email', 'phone', 'address', 'about', 'bio', 'gender'];
+    allowedFields.forEach(field => {
+      if (req.body[field] !== undefined && req.body[field] !== null && req.body[field] !== '') {
+        user[field] = req.body[field];
+      }
+    });
 
-    // If a file is uploaded
-    if (req.file) {
-      // For testing: store as base64
-      user.profilePic = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+    // Handle file upload via express-fileupload
+    if (req.files && req.files.profilePic) {
+      const file = req.files.profilePic;
+      try {
+        // file.data is a buffer
+        const url = await uploadToCloudinary(file.data, "profile_pics");
+        user.ProfileImg = url;
+        console.log("Profile picture uploaded successfully:", url);
+      } catch (uploadError) {
+        console.error("Cloudinary upload error:", uploadError);
+        // Don't fail the whole request
+      }
     }
 
     await user.save();
+    console.log("User updated successfully");
 
-    res.json({ success: true, user });
-  } catch (error) {
-    console.error("❌ updateProfile error:", error);
-    res.status(500).json({ success: false, message: error.message });
+    const updatedUser = await User.findById(user._id).select('-password -resetPasswordToken -resetPasswordExpire');
+
+    res.json({
+      success: true,
+      message: "Profile updated successfully",
+      user: updatedUser
+    });
+  } catch (err) {
+    console.error("❌ updateProfile error:", err);
+    res.status(500).json({
+      success: false,
+      message: err.message || "Failed to update profile"
+    });
   }
 };
 

@@ -68,15 +68,17 @@ export const updateProfile = createAsyncThunk(
   'auth/updateProfile',
   async (formData, { rejectWithValue }) => {
     try {
-      const { data } = await axiosInstance.patch('/auth/user/update-profile', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      return data.user; // return updated user
+      // Don't set Content-Type header - let browser set it with boundary
+      const res = await axiosInstance.patch('/auth/user/update-profile', formData, );
+      console.log(res)
+      return res.data.user;
     } catch (error) {
+      console.error('Update profile error:', error.response?.data || error);
       return rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );
+
 
 // ================= INITIAL STATE =================
 const initialState = {
@@ -155,14 +157,14 @@ const authSlice = createSlice({
             //   state.authChecked = true;
       
             })      .addCase(updateProfile.pending, (state) => {
-        state.loading = true;
+        state.isUpdating = true;
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.authUser = action.payload;
-        state.loading = false;
+        state.isUpdating = false;
       })
       .addCase(updateProfile.rejected, (state, action) => {
-        state.loading = false;
+        state.isUpdating = false;
         state.error = action.payload;
       });
   },

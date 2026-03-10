@@ -5,13 +5,10 @@ import authMiddleware from "../middlewares/authMiddleware.js";
 import { getUser, getVendorDetails, login, logout, register, updateProfile, verifyOtp } from "../controllers/userControler.js";
 import { getProductsByCategory } from "../controllers/categoryControler.js";
 import Vendor from "../models/Vendor.js";
+import { upload } from "../config/multer.js";
 const router = express.Router();
 
-const storage = multer.memoryStorage();
-const upload = multer({ 
-  storage,
-  limits: { fileSize: 2 * 1024 * 1024 } // 2MB limit
-});
+
 
 
 router.get("/me",authMiddleware,getUser);
@@ -51,7 +48,7 @@ router.get("/vendor/:vendorId", async (req, res) => {
 });
 
 
-router.patch("/update-profile", authMiddleware,   upload.single("profilePic"), updateProfile);
+router.patch("/update-profile", authMiddleware, updateProfile);
 
 
 
