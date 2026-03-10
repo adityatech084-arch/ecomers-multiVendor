@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Anton&family=Poppins:ital,wght@0,100;0,300;0,600;0,700;0,800;0,900;1,300;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=TASA+Explorer:wght@400..800&family=Zalando+Sans:ital,wght@0,200..900;1,200..900&display=swap');
+@import "tailwindcss";
+
+*{
+  /* font-family: 'Poppins',sans-serif; */
+ 
+}
+
+/* Hide scrollbar but keep scrolling */
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+html.dark{
+  background-color: black;
+}
+html{
+  background-color: white;
+}
+@theme{
+    /* --breakpoint-sm:400px; */
+    /* --breakpoint-lg:1200px; */
+  /* --breakpoint-mobile-menu:680px; */
+  --breakpoint-end-screen:1850px;
+  /* --breakpoint-xsl-986:986px; */
+  /* --breakpoint-xl-1500:1500px; */
+  --font-Poppins:'Poppins','sans-serif';
+  --font-Alfa-Slab-One:'Alfa Slab One','sans-serif';
+  --font-Tasa:'TASA Explorer', 'sans-serif';
+}
+
+@layer base{
+    html {
+    @apply bg-white text-black;
+  }
+
+  html.dark {
+    @apply bg-black text-white;
+  }
+}
+@layer components{
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .max-container {
+    @apply max-w-screen-xl mx-auto   max-xl:mx-3
+  }
+}
