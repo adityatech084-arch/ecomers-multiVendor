@@ -12,9 +12,10 @@ import Loader from '../components/biteComponents/Loader';
 import ProductNotFound from '../components/biteComponents/ProductNotFound';
 import {addToCart} from "../features/cartSlice.js";
 import { HiMiniFire } from 'react-icons/hi2';
-import { AddToCart } from '../components/ProductActions.jsx';
+import { AddToCart, BuyButton } from '../components/ProductActions.jsx';
 const ProductDetails = () => {
   const {product,loading} = useSelector(state=>state.product);
+  const {authUser}=useSelector(state=>state.auth);
   const [activeImg, setActiveImg] = useState(0);
   const dispatch = useDispatch();
   const {id} = useParams();
@@ -138,10 +139,14 @@ if(loading) {
               <Link to={`/vendor-store/${product.vendor._id}`} className='text-sm text-blue-500 underline'>Wiste to store</Link>
               </div>
             </div>
+            {
+
+            authUser &&
             <Link to={`/category/${product.vendor._id}`} className=' rounded border border-red-400 p-2'>
-              <span className=' font-Poppins font-semibold text-sm'>explore more more categories</span>
+              <span className=' font-Poppins font-semibold text-sm'>explore more  categories</span>
             </Link>
 
+            }
             <div className="border-t border-gray-100 pt-4">
               <div className="flex items-baseline gap-3 mb-1">
                 <span className="text-2xl font-bold text-[#1b4d3e]"> ₹{product.salePrice}</span>
@@ -166,10 +171,11 @@ if(loading) {
             </div>
             
             <div className="flex gap-3 ">
-              <button className="flex-1 bg-[#1b4d3e] text-white py-3 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#143a2f] transition-all active:scale-95">
+              {/* <button className="flex-1 bg-[#1b4d3e] text-white py-3 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#143a2f] transition-all active:scale-95">
                 <HiOutlineShoppingBag size={18} />
                 Buy Now
-              </button>
+              </button> */}
+              <BuyButton product={product}/>
               <button className="p-3 border border-gray-200 rounded-lg text-gray-400 hover:text-red-500 hover:border-red-500 transition-all">
                 <HiOutlineHeart size={20} />
               </button>

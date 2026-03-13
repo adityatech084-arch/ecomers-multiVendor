@@ -10,7 +10,7 @@ import { uploadToCloudinary } from "../config/cloudinary.js";
 
 const generateOtpToken = (userId) =>{
 
-   return  jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "10m" });
+   return  jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "1d" });
 }
 
 const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString();

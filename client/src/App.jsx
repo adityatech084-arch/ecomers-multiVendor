@@ -65,7 +65,8 @@ if(isCheckingAuth){
   <Route path='/shop' element={<Shop/>}/>
   <Route path='/product/:id' element={<ProductDetails/>}/>
   <Route path='/cart' element={<Cart/>}/>
-  <Route path='/category/:vendorId' element={<Categories/>}/>
+  
+  {/* <Route path='/category/:vendorId' element={<Categories/>}/> */}
   <Route path='/wishlist' element={<Wishlist/>}/>
   {/* <Route path='/profile'element={<Profile/>}/> */}
   <Route element={<PublicProtector />}>
@@ -79,6 +80,7 @@ if(isCheckingAuth){
   <Route path='/stores'element={<StorePage/>}/>
   <Route path='/verify-otp'element={<AuthLayout><VerifyOtp/></AuthLayout>}/>
   <Route element={<AuthProtector/>}>
+  <Route path='/category/:vendorId' element={<Categories/>}/>
   
   <Route path='/profile'element={<ProfilePage/>}/>
   </Route>

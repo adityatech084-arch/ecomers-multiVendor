@@ -101,33 +101,110 @@ export const AddToCart = ({ product }) => {
 
 
 
-export const BuyButton = ({ product }) => {
+// export const BuyButton = ({ product }) => {
 
+//   const { user } = useSelector((state) => state.auth);
+//   const navigate = useNavigate();
+
+//   const handleBuy = () => {
+
+//     // If user not logged in → go to login
+//     if (!user) {
+//       navigate("/login", {
+//         state: {
+//           action: "BUY_NOW",
+//           productId: product._id,
+//           quantity: 1
+//         }
+//       });
+//       return;
+//     }
+
+//     // If logged in → go to checkout
+//     navigate("/checkout", {
+//       state: {
+//         productId: product._id,
+//         quantity: 1
+//       }
+//     });
+
+//   };
+
+//   return (
+//     <button
+//       onClick={handleBuy}
+//       className="flex-1 bg-[#1b4d3e] text-white py-3 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#143a2f] transition-all active:scale-95"
+//     >
+//       <HiOutlineShoppingBag size={18} />
+//       Buy Now
+//     </button>
+//   );
+// };
+
+
+
+
+export const BuyButton = ({ product }) => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  const handleBuy = () => {
-
-    // If user not logged in → go to login
+  const handleBuy = async () => {
     if (!user) {
+      // Redirect to login and pass product info via state
       navigate("/login", {
-        state: {
-          action: "BUY_NOW",
-          productId: product._id,
-          quantity: 1
-        }
+        state: { action: "BUY_NOW", product }
       });
       return;
     }
 
-    // If logged in → go to checkout
-    navigate("/checkout", {
-      state: {
-        productId: product._id,
-        quantity: 1
-      }
-    });
+    if (!product.vendor?._id) {
+      return toast.error("Vendor info missing for this product");
+    }
 
+    try {
+      // Create an order on the backend to get Razorpay orderId
+      const { data } = await axios.post("/orders/create", {
+        productId: product._id,
+        vendorId: product.vendor._id,
+        quantity: 1
+      });
+
+      const options = {
+        key: process.env.REACT_APP_RAZORPAY_KEY,
+        amount: data.amount, // in paise
+        currency: data.currency,
+        name: product.vendor.storeName,
+        description: product.name,
+        order_id: data.id, // Razorpay order id from backend
+        handler: async function (response) {
+          // On successful payment, create order record
+          await axios.post("/orders/confirm", {
+            productId: product._id,
+            vendorId: product.vendor._id,
+            vendorName: product.vendor.storeName,
+            userId: user._id,
+            quantity: 1,
+            paymentId: response.razorpay_payment_id
+          });
+
+          toast.success("Payment successful! Order placed.");
+          // Optionally redirect to orders page
+          navigate("/orders");
+        },
+        prefill: {
+          name: user.name,
+          email: user.email,
+          contact: user.phone || ""
+        },
+        theme: { color: "#1b4d3e" }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.response?.data?.message || "Failed to initiate payment");
+    }
   };
 
   return (

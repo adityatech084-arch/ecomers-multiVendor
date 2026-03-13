@@ -65,31 +65,49 @@ import dotenv from "dotenv";
 dotenv.config();
 import jwt from "jsonwebtoken";
 
+// export const generateToken = (userId, res) => {
+//   // JWT expiration: 1 day
+//   const expiresIn = "24h"; // 24 hours
+
+//   const token = jwt.sign(
+//     { id: userId },
+//     process.env.JWT_SECRET,
+//     { expiresIn }
+//   );
+
+//   // Cookie duration in ms: 1 day
+//   const maxAgeInMs = 24 * 60 * 60 * 1000; // 24 hours
+
+//   res.cookie("token", token, {
+//     maxAge: maxAgeInMs,
+//     httpOnly: true,
+//     sameSite: "strict",
+//     secure: process.env.NODE_ENV === "production",
+//     path: "/", // valid for all routes
+//   });
+
+//   return token;
+// };
+
 export const generateToken = (userId, res) => {
-  // JWT expiration: 1 day
-  const expiresIn = "24h"; // 24 hours
+  const expiresIn = process.env.JWT_EXPIRES_IN || "1d";
 
-  const token = jwt.sign(
-    { id: userId },
-    process.env.JWT_SECRET,
-    { expiresIn }
-  );
+  const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn });
 
-  // Cookie duration in ms: 1 day
-  const maxAgeInMs = 24 * 60 * 60 * 1000; // 24 hours
+  const maxAgeInMs = 
+    (Number(process.env.COOKIE_EXPIRE_HOURS) || 24) * 60 * 60 * 1000 +
+    (Number(process.env.COOKIE_EXPIRE_MINUTES) || 0) * 60 * 1000;
 
   res.cookie("token", token, {
     maxAge: maxAgeInMs,
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: "lax", // allow redirects
     secure: process.env.NODE_ENV === "production",
-    path: "/", // valid for all routes
+    path: "/",
   });
 
   return token;
 };
-
-
 
 // export const generateToken = (userId, res) => {
 //   // JWT expires in 30 days
