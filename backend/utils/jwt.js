@@ -103,8 +103,7 @@ export const generateToken = (userId, res) => {
     httpOnly: true, // allow redirects
       sameSite: "none",
     secure:true,
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
+  
   });
 
   return token;
