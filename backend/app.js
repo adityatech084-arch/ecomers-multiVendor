@@ -11,7 +11,7 @@ import cartRouter from "./routes/cart.route.js"
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 app.use(cors({
-    origin:[process.env.FRONTEND_URL],
+    origin:[process.env.FRONTEND_URL,process.env.ADMIN_URL],
     credentials:true,
 }));
 app.use(express.json());
