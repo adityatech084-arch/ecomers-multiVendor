@@ -100,8 +100,9 @@ export const generateToken = (userId, res) => {
 
   res.cookie("token", token, {
     maxAge: maxAgeInMs,
-    httpOnly: true,
-    sameSite: "lax", // allow redirects
+    httpOnly: true, // allow redirects
+      sameSite: "none",
+    secure:true,
     secure: process.env.NODE_ENV === "production",
     path: "/",
   });
