@@ -197,6 +197,11 @@ const CartPage = () => {
   }, [items, dispatch]);
 
 
+ if(loading) {
+  return   <div className="flex bg-gray-100 items-center justify-center h-[80vh]">
+<Loader size={60} color='#000'/>
+  </div> 
+}
   if (!items.length) return <Empty />;
 
 
