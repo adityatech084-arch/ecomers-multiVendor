@@ -13,7 +13,7 @@ import CategoryTree from './pages/Category'
 import SignUp from './authPages/SignUp'
 import AuthLayout from './authPages/AuthLayout'
 import StoreSuccess from './components/bitComponents/StoreSuccess'
-import VerifyOtp from './authPages/verifyOtp'
+import VerifyOtp from './authPages/VerifyOtp'
 import PreLoader from './components/bitComponents/PreLoader'
 import {useDispatch, useSelector} from "react-redux";
 import { checkAuth } from './features/auth/authSlice'
