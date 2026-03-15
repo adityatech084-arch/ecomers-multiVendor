@@ -172,6 +172,7 @@ import React, { useEffect, useState } from 'react';
 import { ShoppingBag, Heart, Trash2, Minus, Plus, MapPin, X } from 'lucide-react';
 import {ProgressBar} from "react-loader-spinner"
 import Empty from '../components/Empty';
+import Loader from '../components/biteComponents/Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromCart, updateQuantity, calculateTotals, fetchCart, RemoveFromCart, ClearCart, clearCart } from '../features/cartSlice';
 import { Link } from 'react-router-dom';
