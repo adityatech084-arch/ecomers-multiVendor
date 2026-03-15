@@ -61,7 +61,7 @@ export const fetchFilteredProducts = createAsyncThunk(
       // Convert filters object to query string
       // const query = new URLSearchParams(filters).toString();
       const res = await axiosInstance.get(`/product/filter?category=${categories}&brand=${Brands}&range=${Price}&limit=${10}`);
-      console.log(res)
+      // console.log(res)
       return res.data.products;
     } catch (err) {
       return rejectWithValue(err.response?.data || err.message);
@@ -76,7 +76,7 @@ export const searchProducts = createAsyncThunk(
       const response = await axiosInstance.get("/product/search", {
         params: { q: searchTerm, page, limit },
       });
-      console.log(response.data)
+      // console.log(response.data)
       return response.data.products; // return only products for state
     } catch (err) {
       return rejectWithValue(err.response?.data || "Failed to search products");
@@ -92,7 +92,7 @@ export const fetchVendorProducts = createAsyncThunk(
       const  res  = await axiosInstance.get("/product/vendor", {
         params: { vendorId, category, page, limit },
       });
-      console.log(res)
+      // console.log(res)
       return res.data.products;
     } catch (error) {
       return thunkAPI.rejectWithValue(

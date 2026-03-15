@@ -23,7 +23,7 @@ export const checkAuth = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.get("/auth/user/me");
-      console.log("Check auth response:", res.data);
+      // console.log("Check auth response:", res.data);
       return res.data.user; // { user }
     } catch (error) {
       return rejectWithValue(error.response?.data?.message);
@@ -70,7 +70,7 @@ export const updateProfile = createAsyncThunk(
     try {
       // Don't set Content-Type header - let browser set it with boundary
       const res = await axiosInstance.patch('/auth/user/update-profile', formData, );
-      console.log(res)
+      // console.log(res)
       return res.data.user;
     } catch (error) {
       console.error('Update profile error:', error.response?.data || error);

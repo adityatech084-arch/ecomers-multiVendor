@@ -12,7 +12,7 @@ export const fetchCart = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.get("/auth/cart/all");
-      console.log(res.data)
+      // console.log(res.data)
      
       return res.data.cart;
     } catch (err) {
