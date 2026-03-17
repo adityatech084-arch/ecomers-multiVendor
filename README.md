@@ -17,22 +17,29 @@ The goal of this project was to build a **scalable marketplace architecture** wh
 ### 📹 *Demo Video*
 
 # 🖼 **Project Screenshots**
-
+# **Client **
 ### 🏠 *Homepage*
 
-![Homepage](./screenshots/homepage.png)
+![Homepage](./screenshots/home.png)
 
 ---
 
 ### 🛍 *Product Page*
 
-![Product Page](./screenshots/product-page.png)
+![Product Page](./screenshots/productdetails.png)
 
 ---
+### 📊 *shop page*
 
-### 📊 *Vendor Dashboard*
+![shop page](./screenshots/shop.png)
 
-![Vendor Dashboard](./screenshots/vendor-dashboard.png)
+### 📊 *cart page*
+
+![cart page](./screenshots/cart.png)
+
+### 📊 *serch page*
+
+![search page](./screenshots/search.png)
 
 ---
 
