@@ -44,7 +44,7 @@ const Layout = () => {
               <div className="bg-white"></div><div className="bg-white"></div>
               <div className="bg-white"></div><div className="bg-white"></div>
             </div>
-            <span className="text-xl font-bold font-Poppins tracking-tight">EzMart</span>
+            <span className="text-xl font-bold font-Poppins tracking-tight">EcoMart</span>
           </div>
           <button className="lg:hidden text-slate-500" onClick={() => setSidebarOpen(false)}>
             <MdClose size={24} />
