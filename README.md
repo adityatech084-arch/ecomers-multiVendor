@@ -66,6 +66,26 @@ The goal of this project was to build a **scalable marketplace architecture** wh
 * Sales monitoring  
 
 ---
+### 📊 *Auth page*
+
+![Auth page](./screenshots/auth1.png)
+![Auth2 page](./screenshots/auth2.png)
+
+### 📊 *success page*
+
+![success page](./screenshots/success.png)
+---
+### 📊 *Dashboard page*
+
+![Dashboard page](./screenshots/dashboard.png)
+
+### 📊 *categories page*
+
+![categories page](./screenshots/category.png)
+
+### 📊 *Add product*
+
+![Add product](./screenshots/addproduct.png)
 
 ## 🛠 **Admin Features**
 
