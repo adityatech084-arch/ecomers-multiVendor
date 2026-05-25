@@ -20,7 +20,7 @@ const Footer = () => {
           {/* Brand Column */}
           <div className="space-y-5">
             <h2 className="text-2xl font-black tracking-tighter text-indigo-700 uppercase">
-              SHOPCAR<span className="text-slate-900">T</span>
+              Eco<span className="text-slate-900">MART</span>
             </h2>
             <p className="text-slate-500 text-sm leading-relaxed">
               Elevate your lifestyle with our curated furniture collections, where modern design meets everyday comfort.
